@@ -1,10 +1,23 @@
-# Getting Started with Create React App
+# Project description
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the reactjs application that enables a user to fetch a list of people and their details.
 
-## Available Scripts
+## Requirements:
 
-In the project directory, you can run:
+- Node js version ^14.x
+- React js version ^14.x
+- All other requirements will be installed as we proceed.
+
+## Getting started with the project
+
+Clone the project:
+`git clone git@github.com:titusdishon/sovtech-client.git` if you are using ssh client or,
+`git clone https://github.com/titusdishon/sovtech-client.git` if you are using https:
+change directory into the cloned project directory and run:
+`npm i` on the shell.
+This will install all the required packages to start interacting with the project:
+
+In the poject directory, you can run:
 
 ### `npm start`
 
@@ -12,37 +25,40 @@ Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
+Thsi project will be consuming graphql endpoints hosted on heroku, if you are interested in using a local version of the server code please follow the guide on [sovtech server](https://github.com/titusdishon/sovtech-server)
+After cloning and runnin the server code remember to change the base url on the client code
+`client/src/apollo/Apollo.tsx`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+import React from "react";
+import App from "../App";
+import {
+ ApolloClient,
+ NormalizedCacheObject,
+ InMemoryCache,
+} from "@apollo/client";
+import { ApolloProvider } from "@apollo/react-hooks";
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+ cache: new InMemoryCache(),
+ uri: "https://sov-test-gql-1.herokuapp.com//",
+});
 
-### `npm run eject`
+const CustomApolloProvider = () => (
+ <ApolloProvider client={client}>
+   <App />
+ </ApolloProvider>
+);
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+export default CustomApolloProvider;
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Change this line `"https://sov-test-gql-1.herokuapp.com//"` to `http://localhost:5781`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-# sovtech-client
-# sovtech-client
+This will route all the requests to the local instance of server code runing on your pc.
